@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CS451 AI - Units 5-8 Exam Prep</title>
+  <style>
+    :root {
+      --maroon: #820030;
+      --maroon-light: #a8004a;
+      --maroon-dark: #5a0020;
+      --accent: #f0c040;
+      --bg: #0f0f13;
+      --surface: #1a1a24;
+      --surface2: #22222e;
+      --border: #2e2e3e;
+      --text: #e8e8f0;
+      --text-dim: #9090a8;
+      --green: #4caf50;
+      --red: #f44336;
+      --blue: #42a5f5;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      background: var(--maroon-dark);
+      border-bottom: 3px solid var(--maroon);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+    nav .brand {
+      padding: 0.8rem 1.2rem;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      border-right: 1px solid var(--maroon);
+    }
+    nav a {
+      color: #ddd;
+      text-decoration: none;
+      padding: 0.8rem 1rem;
+      font-size: 0.875rem;
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+    nav a:hover, nav a.active { background: var(--maroon); color: #fff; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, var(--maroon-dark) 0%, #1a0010 100%);
+      padding: 3.5rem 2rem 3rem;
+      text-align: center;
+      border-bottom: 2px solid var(--maroon);
+    }
+    .hero h1 { font-size: 2.4rem; color: var(--accent); margin-bottom: 0.4rem; }
+    .hero p { color: var(--text-dim); font-size: 1rem; }
+    .unit-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .unit-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--maroon);
+      border-radius: 8px;
+      padding: 1rem 1.4rem;
+      width: 200px;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .unit-card:hover { transform: translateY(-3px); border-top-color: var(--accent); }
+    .unit-card .num { font-size: 1.8rem; font-weight: 700; color: var(--maroon); }
+    .unit-card .title { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.2rem; }
+
+    /* MAIN LAYOUT */
+    .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+    /* SECTION HEADER */
+    .section-header {
+      background: linear-gradient(90deg, var(--maroon) 0%, var(--maroon-dark) 100%);
+      border-radius: 8px 8px 0 0;
+      padding: 1rem 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .section-header .ch { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+    .section-header .ch-title { font-size: 1.1rem; font-weight: 600; color: #fff; }
+
+    .unit-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 2.5rem;
+    }
+    .unit-body { padding: 1.4rem; }
+
+    h3.sub {
+      color: var(--accent);
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 1.4rem 0 0.6rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.3rem;
+    }
+    h4.subsub {
+      color: var(--blue);
+      font-size: 0.9rem;
+      margin: 0.8rem 0 0.3rem;
+    }
+
+    ul.bullets { padding-left: 1.4rem; }
+    ul.bullets li { margin-bottom: 0.3rem; font-size: 0.9rem; color: var(--text); }
+    ul.bullets li::marker { color: var(--maroon); }
+
+    /* TABLE */
+    .tbl-wrap { overflow-x: auto; margin: 0.6rem 0; }
+    table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
+    th {
+      background: var(--maroon);
+      color: #fff;
+      padding: 0.5rem 0.8rem;
+      text-align: left;
+    }
+    td { padding: 0.45rem 0.8rem; border-bottom: 1px solid var(--border); }
+    tr:nth-child(even) td { background: var(--surface2); }
+    tr:hover td { background: #1e1e2e; }
+
+    code {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.1em 0.4em;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85em;
+      color: var(--accent);
+    }
+
+    .note {
+      background: #1a1a00;
+      border-left: 3px solid var(--accent);
+      padding: 0.6rem 1rem;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.88rem;
+      margin: 0.6rem 0;
+      color: #d0c080;
+    }
+
+    .algo {
+      background: #0d0d1a;
+      border: 1px solid #333;
+      border-left: 3px solid var(--blue);
+      border-radius: 4px;
+      padding: 0.7rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.82rem;
+      color: #aad4ff;
+      margin: 0.5rem 0;
+      white-space: pre-wrap;
+    }
+
+    /* QUIZ */
+    #quiz-section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+    .quiz-header {
+      background: linear-gradient(90deg, #003d6b 0%, #001a30 100%);
+      border-radius: 8px 8px 0 0;
+      padding: 1rem 1.4rem;
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .quiz-header h2 { color: var(--accent); font-size: 1.2rem; }
+    .quiz-header .badge { background: var(--maroon); color: #fff; border-radius: 20px; padding: 0.2rem 0.7rem; font-size: 0.78rem; }
+
+    .quiz-controls { padding: 1rem 1.4rem; display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: center; border-bottom: 1px solid var(--border); }
+    .quiz-controls label { font-size: 0.88rem; color: var(--text-dim); }
+    .quiz-controls select {
+      background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+      padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.88rem;
+    }
+    .btn {
+      padding: 0.45rem 1.1rem;
+      border: none; border-radius: 5px; cursor: pointer;
+      font-size: 0.88rem; font-weight: 600; transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background: var(--maroon); color: #fff; }
+    .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+
+    #quiz-body { padding: 1.4rem; }
+    .q-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 1.1rem;
+      margin-bottom: 1.2rem;
+    }
+    .q-card .q-num { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0.3rem; }
+    .q-card .q-text { font-size: 0.93rem; margin-bottom: 0.8rem; font-weight: 500; }
+    .option {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.45rem 0.7rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.15s;
+      font-size: 0.88rem;
+      margin-bottom: 0.35rem;
+      border: 1px solid transparent;
+    }
+    .option:hover { background: var(--surface); border-color: var(--border); }
+    .option input[type="radio"] { accent-color: var(--maroon); }
+    .option.correct { background: #0d2b0d; border-color: var(--green); color: #90ee90; }
+    .option.wrong { background: #2b0d0d; border-color: var(--red); color: #ffaaaa; }
+    .option.reveal-correct { background: #0d2b0d; border-color: var(--green); color: #90ee90; }
+
+    .q-feedback { font-size: 0.82rem; margin-top: 0.5rem; padding: 0.4rem 0.7rem; border-radius: 4px; }
+    .q-feedback.correct { background: #0d2b0d; color: #90ee90; }
+    .q-feedback.wrong { background: #2b0d0d; color: #ffaaaa; }
+
+    .score-banner {
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--surface2);
+      border-radius: 7px;
+      margin-top: 1rem;
+    }
+    .score-banner .score-num { font-size: 3rem; font-weight: 700; color: var(--accent); }
+    .score-banner .score-label { color: var(--text-dim); font-size: 0.9rem; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      margin-top: 2rem;
+    }
+
+    /* SCROLL ANCHOR OFFSET */
+    .anchor { scroll-margin-top: 60px; }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.6rem; }
+      nav a { padding: 0.6rem 0.7rem; font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">CS451 AI</div>
+  <a href="#unit5">Ch.5 Adversarial</a>
+  <a href="#unit6">Ch.6 CSPs</a>
+  <a href="#unit7">Ch.7 Prop. Logic</a>
+  <a href="#unit8">Ch.8 FOL</a>
+  <a href="#quiz">Quiz</a>
+</nav>
+
+<div class="hero">
+  <h1>CS451 Artificial Intelligence</h1>
+  <p>Units 5–8 Exam Prep &nbsp;|&nbsp; Prof. Hussein Alzoubi &nbsp;|&nbsp; Second Semester 2025/2026</p>
+  <div class="unit-cards">
+    <a href="#unit5" class="unit-card">
+      <div class="num">05</div>
+      <div class="title">Adversarial Search &amp; Games</div>
+    </a>
+    <a href="#unit6" class="unit-card">
+      <div class="num">06</div>
+      <div class="title">Constraint Satisfaction</div>
+    </a>
+    <a href="#unit7" class="unit-card">
+      <div class="num">07</div>
+      <div class="title">Propositional Logic</div>
+    </a>
+    <a href="#unit8" class="unit-card">
+      <div class="num">08</div>
+      <div class="title">First-Order Logic</div>
+    </a>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ===== UNIT 5 ===== -->
+  <div id="unit5" class="unit-section anchor">
+    <div class="section-header">
+      <span class="ch">Ch.5</span>
+      <span class="ch-title">Adversarial Search &amp; Games</span>
+    </div>
+    <div class="unit-body">
+
+      <h3 class="sub">Game Types</h3>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Axis</th><th>Options</th></tr>
+          <tr><td>Deterministic vs Stochastic</td><td>Chess (det.) vs. Backgammon (stoch.)</td></tr>
+          <tr><td>Perfect vs Imperfect Info</td><td>Chess (perfect) vs. Poker, Kriegspiel (imperfect)</td></tr>
+          <tr><td>Zero-sum</td><td>One player's gain = other's loss</td></tr>
+          <tr><td>Players</td><td>2-player, multi-player</td></tr>
+        </table>
+      </div>
+
+      <h3 class="sub">Minimax</h3>
+      <ul class="bullets">
+        <li>MAX player maximizes utility; MIN player minimizes it.</li>
+        <li>Recursively compute minimax value of each node.</li>
+        <li>Complete &amp; optimal vs. rational opponent.</li>
+        <li>Time: <code>O(b^m)</code>, Space: <code>O(bm)</code>.</li>
+        <li><strong>Multiplayer:</strong> Each node stores a vector of utilities (one per player); each player maximizes their own component.</li>
+      </ul>
+      <div class="algo">MINIMAX(state):
+  if TERMINAL(state): return UTILITY(state)
+  if MAX's turn: return max over actions of MINIMAX(RESULT(state,a))
+  if MIN's turn: return min over actions of MINIMAX(RESULT(state,a))</div>
+
+      <h3 class="sub">Alpha-Beta Pruning</h3>
+      <ul class="bullets">
+        <li>Prunes branches that cannot affect the final decision.</li>
+        <li><strong>alpha</strong>: best value MAX can guarantee so far (starts -inf).</li>
+        <li><strong>beta</strong>: best value MIN can guarantee so far (starts +inf).</li>
+        <li>Prune when <code>alpha &ge; beta</code>.</li>
+        <li>Best case (perfect ordering): <code>O(b^(m/2))</code> — effectively doubles search depth.</li>
+        <li>Average (random ordering): <code>O(b^(3m/4))</code>.</li>
+      </ul>
+      <div class="note">Key insight: A MIN node below a MAX node is pruned if its value falls below alpha. A MAX node below a MIN node is pruned if its value exceeds beta.</div>
+
+      <h3 class="sub">Heuristic Minimax (H-MINIMAX)</h3>
+      <ul class="bullets">
+        <li>Cuts off search at depth <em>d</em> and applies evaluation function <code>EVAL(s)</code>.</li>
+        <li>EVAL must: (1) be fast, (2) correlate with true utility, (3) agree on terminals.</li>
+        <li><strong>Quiescence search:</strong> Extend search beyond cutoff when position is "noisy" (captures, checks).</li>
+        <li><strong>Horizon effect:</strong> Agent pushes bad moves beyond search depth — use singular extensions to avoid.</li>
+        <li><strong>Forward pruning:</strong> Beam search, killer moves, futility pruning — prune unlikely branches early.</li>
+        <li><strong>Lookup tables:</strong> Pre-computed endgame values (e.g., all 5-piece chess endgames).</li>
+      </ul>
+
+      <h3 class="sub">Monte Carlo Tree Search (MCTS)</h3>
+      <ul class="bullets">
+        <li>Does not require an evaluation function — uses random playouts (simulations).</li>
+        <li><strong>4 phases per iteration:</strong></li>
+      </ul>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Phase</th><th>Description</th></tr>
+          <tr><td>1. Selection</td><td>Follow UCB1 policy from root to leaf</td></tr>
+          <tr><td>2. Expansion</td><td>Add one or more child nodes</td></tr>
+          <tr><td>3. Simulation</td><td>Random playout to terminal state</td></tr>
+          <tr><td>4. Backpropagation</td><td>Update win/visit counts up the tree</td></tr>
+        </table>
+      </div>
+      <ul class="bullets">
+        <li><strong>UCB1 formula:</strong> <code>UCB1(n) = U(n)/N(n) + C * sqrt(log N(Parent)/N(n))</code></li>
+        <li>C controls exploration vs. exploitation tradeoff.</li>
+        <li>Anytime algorithm — can stop at any point and return best move so far.</li>
+      </ul>
+
+      <h3 class="sub">Stochastic Games</h3>
+      <ul class="bullets">
+        <li>Include chance nodes in game tree (e.g., dice rolls in Backgammon).</li>
+        <li><strong>EXPECTIMINIMAX:</strong> At chance nodes, take weighted average over outcomes.</li>
+        <li><code>EXPECTIMINIMAX(C) = sum_r P(r) * EXPECTIMINIMAX(RESULT(C,r))</code></li>
+        <li>Eval function must be linear in outcome probabilities (not just monotone).</li>
+        <li>Complexity: <code>O(b^m * n^m)</code> where n = number of distinct dice outcomes.</li>
+      </ul>
+
+      <h3 class="sub">Partially Observable Games</h3>
+      <ul class="bullets">
+        <li><strong>Kriegspiel (blind chess):</strong> Cannot see opponent pieces. Maintain a belief state over possible board positions.</li>
+        <li><strong>Card games (Bridge, Poker):</strong> Cards dealt randomly — model as stochastic games OR use Monte Carlo averaging over opponent hand deals.</li>
+        <li><strong>Proper solution:</strong> Solve with belief-state search; <em>averaging over clairvoyance</em> is a common shortcut but sub-optimal.</li>
+      </ul>
+
+      <h3 class="sub">Limitations</h3>
+      <ul class="bullets">
+        <li>Alpha-beta still requires exponential time in worst case.</li>
+        <li>Eval functions can be exploited if opponent knows them.</li>
+        <li>MCTS can be weak in tactical/sharp positions without good rollout policy.</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <!-- ===== UNIT 6 ===== -->
+  <div id="unit6" class="unit-section anchor">
+    <div class="section-header">
+      <span class="ch">Ch.6</span>
+      <span class="ch-title">Constraint Satisfaction Problems (CSPs)</span>
+    </div>
+    <div class="unit-body">
+
+      <h3 class="sub">CSP Definition</h3>
+      <ul class="bullets">
+        <li>A CSP is defined by: <strong>Variables</strong> X, <strong>Domains</strong> D, <strong>Constraints</strong> C.</li>
+        <li>Goal: find assignment satisfying ALL constraints (consistent &amp; complete).</li>
+        <li>Constraint types: unary, binary, global (e.g., AllDiff), soft.</li>
+        <li>Example: Map coloring — variables = regions, domain = {R,G,B}, constraint = adjacent regions differ.</li>
+      </ul>
+
+      <h3 class="sub">Constraint Graph</h3>
+      <ul class="bullets">
+        <li>Nodes = variables, edges = binary constraints.</li>
+        <li>Graph structure reveals tractable sub-problems (trees are solvable in linear time).</li>
+      </ul>
+
+      <h3 class="sub">Arc Consistency (AC-3)</h3>
+      <ul class="bullets">
+        <li>Arc (X,Y) is consistent if for every value in D(X) there is some value in D(Y) satisfying the constraint.</li>
+        <li>AC-3 repeatedly removes values that violate arc consistency; adds arcs back to queue when domain reduced.</li>
+        <li>Complexity: <code>O(cd^3)</code> where c = number of arcs, d = domain size.</li>
+        <li>AC-3 does NOT guarantee a solution — just reduces domains.</li>
+      </ul>
+      <div class="algo">AC-3:
+  queue = all arcs
+  while queue not empty:
+    (X,Y) = dequeue
+    if REVISE(X,Y):
+      if D(X) is empty: return FAILURE
+      add all (Z,X) to queue for Z in neighbors(X) - {Y}</div>
+
+      <h3 class="sub">Backtracking Search</h3>
+      <ul class="bullets">
+        <li>Assign one variable at a time; backtrack when no legal value remains.</li>
+        <li>Basic algorithm: DFS with constraint checking at each step.</li>
+        <li><strong>Forward checking:</strong> After assigning X, remove values from neighbors' domains that conflict. Detects failure earlier.</li>
+        <li><strong>MAC (Maintaining Arc Consistency):</strong> Run AC-3 after each assignment — stronger than forward checking.</li>
+      </ul>
+
+      <h3 class="sub">Variable/Value Ordering Heuristics</h3>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Heuristic</th><th>Description</th><th>Type</th></tr>
+          <tr><td>MRV (Minimum Remaining Values)</td><td>Choose variable with fewest legal values</td><td>Variable</td></tr>
+          <tr><td>Degree Heuristic</td><td>Choose variable with most constraints on remaining unassigned variables</td><td>Variable (tie-break)</td></tr>
+          <tr><td>LCV (Least Constraining Value)</td><td>Choose value that rules out fewest values in neighboring domains</td><td>Value</td></tr>
+        </table>
+      </div>
+
+      <h3 class="sub">Conflict-Directed Backjumping (CBJ)</h3>
+      <ul class="bullets">
+        <li>Instead of backtracking one level, jump back to the variable that <em>caused</em> the conflict.</li>
+        <li>Each variable maintains a <strong>conflict set</strong> — set of past variables responsible for domain wipeout.</li>
+        <li>More efficient than chronological backtracking on large problems.</li>
+        <li><strong>Constraint learning / nogood recording:</strong> Record the minimal inconsistent set as a new constraint to avoid re-exploring.</li>
+      </ul>
+
+      <h3 class="sub">Local Search for CSPs</h3>
+      <ul class="bullets">
+        <li>Start with complete (but inconsistent) assignment; iteratively repair conflicts.</li>
+        <li><strong>Min-conflicts heuristic:</strong> For the variable to change, pick value that minimizes number of violated constraints.</li>
+        <li>Very effective on large problems (e.g., solves n-Queens for n=10^6 in seconds).</li>
+        <li>Plateau problem: use sideways moves and random restarts.</li>
+      </ul>
+
+      <h3 class="sub">Problem Structure &amp; Efficiency</h3>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Structure</th><th>Algorithm</th><th>Complexity</th></tr>
+          <tr><td>Tree (no cycles)</td><td>Topological sort + directional arc consistency</td><td>O(n * d^2)</td></tr>
+          <tr><td>Cutset conditioning</td><td>Remove s vars to make tree, solve tree for each cutset assignment</td><td>O(d^s * n * d^2)</td></tr>
+          <tr><td>Tree decomposition</td><td>Decompose into tree of sub-problems (width w)</td><td>O(n * d^(w+1))</td></tr>
+        </table>
+      </div>
+      <ul class="bullets">
+        <li><strong>Value symmetry:</strong> If permuting values gives equivalent solutions, add symmetry-breaking constraints (e.g., fix one color = Red).</li>
+        <li><strong>Cycle cutset:</strong> Smallest set of variables whose removal leaves a tree. Finding minimum cutset is NP-hard, but good heuristics exist.</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <!-- ===== UNIT 7 ===== -->
+  <div id="unit7" class="unit-section anchor">
+    <div class="section-header">
+      <span class="ch">Ch.7</span>
+      <span class="ch-title">Logical Agents &amp; Propositional Logic</span>
+    </div>
+    <div class="unit-body">
+
+      <h3 class="sub">Knowledge-Based Agents</h3>
+      <ul class="bullets">
+        <li>Maintain a <strong>Knowledge Base (KB)</strong> — set of sentences in formal language.</li>
+        <li><strong>TELL:</strong> Add new sentence to KB. <strong>ASK:</strong> Query KB (inference).</li>
+        <li>Agent operates at two levels: <em>knowledge level</em> (what it knows) and <em>implementation level</em> (how it's stored).</li>
+        <li><strong>Entailment:</strong> KB |= a if every model of KB is also a model of a.</li>
+      </ul>
+
+      <h3 class="sub">Wumpus World</h3>
+      <ul class="bullets">
+        <li>4x4 grid; agent has: Breeze/Stench/Glitter percepts; can Grab/Shoot/Climb.</li>
+        <li>Stench adj. to Wumpus; Breeze adj. to Pit; Glitter means Gold in cell.</li>
+        <li>Used to illustrate knowledge-based reasoning under uncertainty.</li>
+        <li>Agent deduces safe cells by combining percepts with logical rules.</li>
+      </ul>
+
+      <h3 class="sub">Propositional Logic — Syntax &amp; Semantics</h3>
+      <ul class="bullets">
+        <li>Atomic sentences: P, Q, R (True/False).</li>
+        <li>Connectives: <code>NOT</code>, <code>AND</code>, <code>OR</code>, <code>-&gt;</code> (implies), <code>&lt;-&gt;</code> (biconditional).</li>
+        <li><strong>Model:</strong> Assignment of True/False to all variables.</li>
+        <li>A sentence is <em>valid</em> (tautology) if true in ALL models; <em>satisfiable</em> if true in some model.</li>
+      </ul>
+
+      <h3 class="sub">Logical Equivalences</h3>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Name</th><th>Equivalence</th></tr>
+          <tr><td>De Morgan's</td><td>NOT(A AND B) = NOT A OR NOT B</td></tr>
+          <tr><td>De Morgan's</td><td>NOT(A OR B) = NOT A AND NOT B</td></tr>
+          <tr><td>Implication Elim.</td><td>A -&gt; B = NOT A OR B</td></tr>
+          <tr><td>Biconditional Elim.</td><td>A &lt;-&gt; B = (A-&gt;B) AND (B-&gt;A)</td></tr>
+          <tr><td>Contrapositive</td><td>A -&gt; B = NOT B -&gt; NOT A</td></tr>
+          <tr><td>Double Negation</td><td>NOT NOT A = A</td></tr>
+        </table>
+      </div>
+
+      <h3 class="sub">Conjunctive Normal Form (CNF)</h3>
+      <ul class="bullets">
+        <li>CNF = conjunction of clauses; each clause = disjunction of literals.</li>
+        <li><strong>Conversion steps:</strong> (1) Eliminate &lt;-&gt;, (2) Eliminate -&gt;, (3) Push NOT inward (De Morgan), (4) Distribute OR over AND.</li>
+        <li>Every propositional sentence can be converted to CNF.</li>
+      </ul>
+
+      <h3 class="sub">Resolution Inference (PL-RESOLUTION)</h3>
+      <ul class="bullets">
+        <li><strong>Resolution rule:</strong> From (A OR B) and (NOT B OR C), derive (A OR C).</li>
+        <li>To prove KB |= a: add NOT a to KB, convert to CNF, apply resolution until empty clause (contradiction) or no new clauses.</li>
+        <li>Empty clause = FALSE = contradiction = proof found.</li>
+        <li>PL-RESOLUTION is <strong>complete</strong> for propositional logic.</li>
+      </ul>
+      <div class="algo">PL-RESOLUTION(KB, alpha):
+  clauses = CNF(KB AND NOT alpha)
+  new = {}
+  loop:
+    for each pair of clauses (Ci, Cj):
+      resolvents = RESOLVE(Ci, Cj)
+      if {} in resolvents: return TRUE (entailed)
+      new = new UNION resolvents
+    if new is subset of clauses: return FALSE
+    clauses = clauses UNION new</div>
+
+      <h3 class="sub">Horn Clauses &amp; Definite Clauses</h3>
+      <ul class="bullets">
+        <li><strong>Horn clause:</strong> At most one positive literal. <code>(NOT A OR NOT B OR C)</code> = <code>A AND B -&gt; C</code>.</li>
+        <li><strong>Definite clause:</strong> Exactly one positive literal.</li>
+        <li><strong>Fact:</strong> Single positive literal (no body).</li>
+        <li>Horn clauses allow efficient inference via forward/backward chaining in linear time.</li>
+      </ul>
+
+      <h3 class="sub">Forward Chaining (PL-FC-ENTAILS?)</h3>
+      <ul class="bullets">
+        <li>Data-driven: start from known facts, fire rules whose premises are satisfied.</li>
+        <li>Add conclusions to KB; repeat until query is in KB or no new facts.</li>
+        <li><strong>Sound &amp; Complete</strong> for Horn KBs.</li>
+        <li>Complexity: <code>O(n)</code> — each symbol added at most once.</li>
+      </ul>
+      <div class="algo">PL-FC-ENTAILS?(KB, q):
+  count[c] = number of symbols in premise of each clause c
+  inferred = {} (all False)
+  agenda = [all known facts in KB]
+  while agenda not empty:
+    p = agenda.pop()
+    if p == q: return TRUE
+    if not inferred[p]:
+      inferred[p] = True
+      for each clause c with p in premise:
+        decrement count[c]
+        if count[c] == 0: agenda.push(HEAD(c))
+  return FALSE</div>
+
+      <h3 class="sub">Backward Chaining</h3>
+      <ul class="bullets">
+        <li>Goal-driven: start from query, find rules that conclude it, recurse on premises.</li>
+        <li>Uses depth-first search; avoids recomputing already-proved goals.</li>
+        <li><strong>Sound &amp; Complete</strong> for Horn KBs.</li>
+        <li>More efficient than forward chaining when only a few goals are needed.</li>
+        <li>Basis of logic programming (Prolog).</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <!-- ===== UNIT 8 ===== -->
+  <div id="unit8" class="unit-section anchor">
+    <div class="section-header">
+      <span class="ch">Ch.8</span>
+      <span class="ch-title">First-Order Logic (FOL)</span>
+    </div>
+    <div class="unit-body">
+
+      <h3 class="sub">Why FOL?</h3>
+      <ul class="bullets">
+        <li>Propositional logic lacks expressiveness — can't talk about objects or relationships.</li>
+        <li>FOL adds: <strong>objects</strong> (constants), <strong>relations</strong> (predicates), <strong>functions</strong>, and <strong>quantifiers</strong>.</li>
+        <li>Commitment: ontological (objects, relations, facts exist) + epistemological (agent's beliefs).</li>
+      </ul>
+
+      <h3 class="sub">Syntax</h3>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Element</th><th>Description</th><th>Example</th></tr>
+          <tr><td>Constant</td><td>Refers to a specific object</td><td>John, 2, KingJohn</td></tr>
+          <tr><td>Variable</td><td>Ranges over objects</td><td>x, y, z</td></tr>
+          <tr><td>Predicate</td><td>Relation between objects</td><td>Loves(John,Mary), On(x,y)</td></tr>
+          <tr><td>Function</td><td>Maps objects to an object</td><td>LeftLeg(John)</td></tr>
+          <tr><td>Term</td><td>Constant, variable, or function</td><td>LeftLeg(x)</td></tr>
+          <tr><td>Atomic sentence</td><td>Predicate applied to terms</td><td>Brother(John,Richard)</td></tr>
+        </table>
+      </div>
+
+      <h3 class="sub">Quantifiers</h3>
+      <ul class="bullets">
+        <li><strong>Universal (FOR ALL x):</strong> True if predicate holds for all objects. Typically used with implication: <code>ForAll x: King(x) -&gt; Mortal(x)</code>.</li>
+        <li><strong>Existential (EXISTS x):</strong> True if predicate holds for some object. Typically used with AND: <code>Exists x: Crown(x) AND OnHead(x,John)</code>.</li>
+        <li><strong>Duality:</strong> <code>ForAll x P(x) = NOT EXISTS x NOT P(x)</code></li>
+        <li><strong>Scope &amp; Nesting:</strong> Order matters — <code>ForAll x Exists y Loves(x,y)</code> differs from <code>Exists y ForAll x Loves(x,y)</code>.</li>
+        <li><strong>Equality:</strong> <code>x = y</code> means x and y refer to the same object.</li>
+      </ul>
+
+      <h3 class="sub">Semantics &amp; Models</h3>
+      <ul class="bullets">
+        <li>A <strong>model</strong> specifies: a domain of objects, and interpretations of constants, functions, and predicates.</li>
+        <li><strong>Unique-names assumption:</strong> Different constants = different objects (used in databases).</li>
+        <li><strong>Closed-world assumption (CWA):</strong> Any fact not stated is assumed false.</li>
+        <li><strong>Domain closure:</strong> No objects other than those named.</li>
+        <li>These three = <em>database semantics</em>. FOL by default uses none of them.</li>
+      </ul>
+
+      <h3 class="sub">Kinship Domain</h3>
+      <ul class="bullets">
+        <li><code>Mother(x) = y &lt;-&gt; Female(y) AND Parent(y,x)</code></li>
+        <li><code>Sibling(x,y) &lt;-&gt; x != y AND Exists p: Parent(p,x) AND Parent(p,y)</code></li>
+        <li><code>Grandparent(x,y) &lt;-&gt; Exists z: Parent(x,z) AND Parent(z,y)</code></li>
+        <li><code>Ancestor(x,y) &lt;-&gt; Parent(x,y) OR Exists z: Parent(x,z) AND Ancestor(z,y)</code></li>
+        <li>Shows recursion (Ancestor) and negation in FOL.</li>
+      </ul>
+
+      <h3 class="sub">Numbers &amp; Sets in FOL</h3>
+      <ul class="bullets">
+        <li><strong>Peano axioms:</strong> <code>0</code> is a number, <code>Succ(x)</code> gives the next number; addition and multiplication defined recursively.</li>
+        <li><strong>Sets:</strong> Defined via <code>Member</code> predicate, intersection, union, subset axioms.</li>
+        <li><strong>Lists:</strong> <code>Nil</code> (empty), <code>Cons(h,t)</code>, <code>Head</code>, <code>Tail</code> analogous to LISP.</li>
+      </ul>
+
+      <h3 class="sub">Wumpus World in FOL</h3>
+      <ul class="bullets">
+        <li>Percepts: <code>Percept([Stench,Breeze,None],1)</code></li>
+        <li><code>ForAll t: Stench(t) -&gt; Exists s: Wumpus(s) AND Adjacent(s, Location(t))</code></li>
+        <li>FOL can express time-indexed facts and rules about the world more cleanly than propositional logic.</li>
+      </ul>
+
+      <h3 class="sub">Knowledge Engineering — 7-Step Process</h3>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>#</th><th>Step</th><th>Key Question</th></tr>
+          <tr><td>1</td><td>Identify the task</td><td>What questions will the KB answer?</td></tr>
+          <tr><td>2</td><td>Assemble relevant knowledge</td><td>What domain knowledge is needed?</td></tr>
+          <tr><td>3</td><td>Decide on vocabulary</td><td>What predicates, functions, constants?</td></tr>
+          <tr><td>4</td><td>Encode general knowledge</td><td>Write domain axioms</td></tr>
+          <tr><td>5</td><td>Encode specific instance</td><td>Write facts about the current problem</td></tr>
+          <tr><td>6</td><td>Pose queries</td><td>Ask the inference engine</td></tr>
+          <tr><td>7</td><td>Debug &amp; refine</td><td>Fix wrong answers by revising axioms</td></tr>
+        </table>
+      </div>
+
+      <h3 class="sub">Electronic Circuits Domain</h3>
+      <ul class="bullets">
+        <li>Types: Circuit, Gate, Terminal, Signal (0 or 1), Type (AND/OR/XOR/NOT).</li>
+        <li>Key predicates: <code>Connected(t1,t2)</code>, <code>Signal(t,s)</code>, <code>GateType(g,t)</code>, <code>Input(g,n,t)</code>, <code>Output(g,n,t)</code>.</li>
+        <li>Axioms: connectivity symmetry, signal propagation through each gate type, uniqueness of output signal.</li>
+        <li><strong>Example query:</strong> "Is output terminal 1 of circuit C1 connected to input terminal 1 of gate G2?"</li>
+        <li>Illustrates how FOL handles structured domains with objects and relations.</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <!-- ===== QUIZ ===== -->
+  <div id="quiz" class="anchor" style="margin-bottom:2.5rem;">
+    <div id="quiz-section">
+      <div class="quiz-header">
+        <h2>Practice Quiz</h2>
+        <span class="badge" id="q-count-badge">30 Questions</span>
+      </div>
+      <div class="quiz-controls">
+        <label>Filter by unit:</label>
+        <select id="unit-filter">
+          <option value="all">All Units (5–8)</option>
+          <option value="5">Unit 5 – Adversarial Search</option>
+          <option value="6">Unit 6 – CSPs</option>
+          <option value="7">Unit 7 – Propositional Logic</option>
+          <option value="8">Unit 8 – First-Order Logic</option>
+        </select>
+        <button class="btn btn-primary" onclick="startQuiz()">Start / Reset Quiz</button>
+        <button class="btn btn-secondary" onclick="submitQuiz()">Submit &amp; Score</button>
+      </div>
+      <div id="quiz-body"></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  CS451 Artificial Intelligence &nbsp;|&nbsp; Second Semester 2025/2026 &nbsp;|&nbsp; Prof. Hussein Alzoubi
+</footer>
+
+<script>
+const ALL_QUESTIONS = [
+  // UNIT 5
+  { unit: 5, q: "In Minimax, what does the MIN player try to do?", options: ["Maximize the utility", "Minimize the utility", "Maximize the number of moves", "Minimize the depth"], answer: 1, exp: "MIN always selects the action with the lowest minimax value to minimize the MAX player's outcome." },
+  { unit: 5, q: "What is the time complexity of basic Minimax?", options: ["O(b*m)", "O(b^m)", "O(m^b)", "O(b^(m/2))"], answer: 1, exp: "Minimax explores the entire game tree: branching factor b, depth m => O(b^m)." },
+  { unit: 5, q: "Alpha-Beta pruning in the best case achieves what complexity?", options: ["O(b^m)", "O(b^(3m/4))", "O(b^(m/2))", "O(b^(m/3))"], answer: 2, exp: "With perfect move ordering, alpha-beta only needs to visit O(b^(m/2)) nodes — effectively doubling search depth." },
+  { unit: 5, q: "A branch is pruned in alpha-beta when:", options: ["alpha > beta", "alpha >= beta", "alpha == beta", "alpha < beta"], answer: 1, exp: "Pruning happens when alpha >= beta — the best option already found makes this branch irrelevant." },
+  { unit: 5, q: "What does the 'horizon effect' refer to in game search?", options: ["Agent can't see distant moves", "Agent delays bad events just past the search depth cutoff", "Agent searches in a straight line", "Eval function returns horizon values"], answer: 1, exp: "The horizon effect is when an agent postpones inevitable bad events just beyond the search depth, making them invisible." },
+  { unit: 5, q: "Which MCTS phase randomly plays out a game to a terminal state?", options: ["Selection", "Expansion", "Simulation", "Backpropagation"], answer: 2, exp: "The Simulation (playout) phase runs a random game from the expanded node to a terminal state." },
+  { unit: 5, q: "EXPECTIMINIMAX handles what type of game nodes?", options: ["AND nodes", "OR nodes", "Chance nodes", "Horizon nodes"], answer: 2, exp: "EXPECTIMINIMAX adds chance nodes to the minimax tree, taking the probability-weighted average at those nodes." },
+  { unit: 5, q: "What is the evaluation function requirement in stochastic games (unlike deterministic)?", options: ["Must be fast", "Must be monotone", "Must be linear in outcome probabilities", "Must use UCB1"], answer: 2, exp: "In stochastic games, the eval function must be linear (not just monotone) in probabilities because of the expectation calculation." },
+  { unit: 5, q: "In multiplayer Minimax, each node stores:", options: ["A single utility value", "A vector of utilities, one per player", "Alpha and beta values", "A probability distribution"], answer: 1, exp: "In multiplayer games, each node stores a utility vector — one value per player — and each player maximizes their own component." },
+  { unit: 5, q: "What is 'quiescence search'?", options: ["Stopping search early at quiet positions", "Extending search beyond cutoff at volatile positions", "Pruning quiet branches", "Searching only terminal nodes"], answer: 1, exp: "Quiescence search extends the cutoff in 'noisy' positions (captures, checks) to avoid evaluating unstable states." },
+
+  // UNIT 6
+  { unit: 6, q: "What three components define a CSP?", options: ["Variables, Domains, Constraints", "States, Actions, Goals", "Nodes, Edges, Weights", "Facts, Rules, Queries"], answer: 0, exp: "A CSP is defined by Variables (X), Domains (D), and Constraints (C)." },
+  { unit: 6, q: "What is the complexity of AC-3?", options: ["O(n^2)", "O(cd^3)", "O(cd^2)", "O(n*d)"], answer: 1, exp: "AC-3 runs in O(cd^3) where c = number of constraints/arcs and d = maximum domain size." },
+  { unit: 6, q: "The MRV heuristic selects the variable with:", options: ["Most constraints", "Fewest remaining legal values", "Largest domain", "Least constraints"], answer: 1, exp: "MRV (Minimum Remaining Values) chooses the variable with the fewest legal values remaining — most likely to fail first." },
+  { unit: 6, q: "What does MAC stand for in CSP solving?", options: ["Maximum Arc Consistency", "Maintaining Arc Consistency", "Minimum Arc Count", "Model Arc Checking"], answer: 1, exp: "MAC = Maintaining Arc Consistency. After each assignment, AC-3 is run to propagate constraints." },
+  { unit: 6, q: "Min-conflicts is a technique for:", options: ["Forward checking in backtracking", "Local search CSP solving", "Converting CSP to tree structure", "Arc consistency propagation"], answer: 1, exp: "Min-conflicts is a local search heuristic: pick the value that minimizes the number of violated constraints." },
+  { unit: 6, q: "A tree-structured CSP (no cycles) can be solved in what time?", options: ["O(d^n)", "O(n * d^2)", "O(n^2 * d)", "O(b^n)"], answer: 1, exp: "A tree-structured CSP can be solved in O(n * d^2) using topological sort + directional arc consistency." },
+  { unit: 6, q: "Conflict-directed backjumping jumps back to:", options: ["The root variable", "The first variable assigned", "The variable that caused the conflict", "A random earlier variable"], answer: 2, exp: "CBJ jumps directly to the variable in the conflict set — the one responsible for the domain wipeout." },
+  { unit: 6, q: "The LCV heuristic selects the value that:", options: ["Has the most constraints", "Rules out fewest values in neighbors", "Is smallest in domain", "Maximizes domain size"], answer: 1, exp: "LCV (Least Constraining Value) picks the value that leaves the most options open for neighboring variables." },
+  { unit: 6, q: "Forward checking differs from MAC in that:", options: ["Forward checking runs full AC-3 after assignment", "Forward checking only checks direct neighbors, not propagating further", "Forward checking is slower", "Forward checking uses backjumping"], answer: 1, exp: "Forward checking only removes values from directly constrained (adjacent) variables. MAC propagates further using AC-3." },
+  { unit: 6, q: "Value symmetry in CSPs can be broken by:", options: ["Using MRV heuristic", "Adding symmetry-breaking constraints (e.g., fix one variable's value)", "Running AC-3 twice", "Using tree decomposition"], answer: 1, exp: "Symmetry-breaking constraints (e.g., force color 1 = Red) eliminate equivalent solutions and reduce search space." },
+
+  // UNIT 7
+  { unit: 7, q: "KB |= alpha means:", options: ["alpha is in KB", "Every model of KB is also a model of alpha", "alpha entails KB", "KB and alpha are equivalent"], answer: 1, exp: "Entailment (KB |= alpha) means alpha is true in every model where KB is true." },
+  { unit: 7, q: "The resolution rule in propositional logic derives:", options: ["A AND B from A OR B", "A OR C from (A OR B) and (NOT B OR C)", "NOT A from A -> B", "B from A AND (A -> B)"], answer: 1, exp: "Resolution: from clause (A OR B) and clause (NOT B OR C), resolve to get (A OR C)." },
+  { unit: 7, q: "To prove KB |= alpha using resolution, you add what to KB?", options: ["alpha", "NOT alpha", "alpha AND KB", "CNFF(alpha)"], answer: 1, exp: "Proof by refutation: add NOT alpha to KB, convert to CNF, apply resolution. Empty clause = contradiction = alpha is entailed." },
+  { unit: 7, q: "CNF stands for:", options: ["Complete Normal Form", "Conjunctive Normal Form", "Clause Negation Form", "Conditional Normal Formula"], answer: 1, exp: "CNF = Conjunctive Normal Form: a conjunction (AND) of clauses, each clause being a disjunction (OR) of literals." },
+  { unit: 7, q: "Forward chaining is best described as:", options: ["Goal-driven reasoning from query back to facts", "Data-driven reasoning from facts to new conclusions", "Random search through the KB", "Backward induction from terminal states"], answer: 1, exp: "Forward chaining is data-driven: starts from known facts, fires rules whose premises are satisfied, adds new facts." },
+  { unit: 7, q: "Which inference method is the basis of Prolog?", options: ["Forward chaining", "Resolution", "Backward chaining", "DPLL"], answer: 2, exp: "Backward chaining (goal-driven, depth-first) is the basis of Prolog's execution model." },
+  { unit: 7, q: "A definite clause has:", options: ["No positive literals", "At most one positive literal", "Exactly one positive literal", "Exactly two positive literals"], answer: 2, exp: "A definite clause has exactly one positive literal. Horn clauses have at most one positive literal (includes goals with zero)." },
+  { unit: 7, q: "In the Wumpus World, a Stench percept means:", options: ["Gold is nearby", "A Pit is adjacent", "The Wumpus is adjacent", "The exit is nearby"], answer: 2, exp: "Stench is perceived when the Wumpus is in an adjacent cell. Breeze indicates a nearby pit." },
+  { unit: 7, q: "Forward chaining on Horn KBs is:", options: ["Sound only", "Complete only", "Sound and Complete", "Neither sound nor complete"], answer: 2, exp: "Forward chaining is both sound (derives only true sentences) and complete (finds all entailed sentences) for Horn KBs." },
+  { unit: 7, q: "The implication elimination equivalence converts A -> B into:", options: ["NOT B -> NOT A", "NOT A OR B", "A AND NOT B", "NOT A AND B"], answer: 1, exp: "Implication elimination: A -> B is equivalent to NOT A OR B. This is used in CNF conversion." },
+
+  // UNIT 8
+  { unit: 8, q: "Which quantifier is typically paired with implication (->)?", options: ["Existential (EXISTS)", "Universal (FOR ALL)", "Neither", "Both equally"], answer: 1, exp: "Universal quantifier is naturally paired with implication: ForAll x: King(x) -> Mortal(x)." },
+  { unit: 8, q: "Which quantifier is typically paired with AND?", options: ["Universal (FOR ALL)", "Existential (EXISTS)", "Both equally", "Neither"], answer: 1, exp: "Existential quantifier naturally uses AND: Exists x: Crown(x) AND OnHead(x, John)." },
+  { unit: 8, q: "The Closed World Assumption (CWA) states:", options: ["All facts are known", "Any fact not stated is assumed FALSE", "Objects are only those named", "Constants refer to the same object"], answer: 1, exp: "CWA: if something isn't stated in the KB, it's assumed to be false. This is standard in database semantics." },
+  { unit: 8, q: "What does the Unique Names Assumption state?", options: ["Each object has one name", "Different constant symbols refer to different objects", "Names must be unique in each query", "Functions must have unique outputs"], answer: 1, exp: "Unique Names Assumption: distinct constants refer to distinct objects (e.g., John != Mary)." },
+  { unit: 8, q: "In FOL, a term can be:", options: ["Only a constant", "Only a variable", "A constant, variable, or function applied to terms", "Only an atomic sentence"], answer: 2, exp: "A term is any of: constant, variable, or function symbol applied to terms (recursive definition)." },
+  { unit: 8, q: "The 7-step knowledge engineering process starts with:", options: ["Writing axioms", "Assembling domain knowledge", "Identifying the task", "Deciding vocabulary"], answer: 2, exp: "Step 1 is: Identify the task — determine what questions the KB needs to answer." },
+  { unit: 8, q: "ForAll x P(x) is equivalent to:", options: ["EXISTS x P(x)", "NOT EXISTS x NOT P(x)", "NOT EXISTS x P(x)", "EXISTS x NOT P(x)"], answer: 1, exp: "Quantifier duality: ForAll x P(x) = NOT EXISTS x NOT P(x). Saying 'all x satisfy P' = 'there's no x that doesn't satisfy P'." },
+  { unit: 8, q: "The Ancestor relation in the Kinship domain is defined using:", options: ["Only Parent predicate", "Recursion (Ancestor calls itself)", "Lists", "Peano axioms"], answer: 1, exp: "Ancestor(x,y) is defined recursively: x is an ancestor of y if x is a parent of y, OR x is a parent of some z who is an ancestor of y." },
+  { unit: 8, q: "Which element in the Electronic Circuits domain checks signal propagation?", options: ["Connected predicate", "Signal predicate and gate-type axioms", "GateType predicate alone", "Input predicate alone"], answer: 1, exp: "Signal propagation is modeled by the Signal predicate combined with axioms for each gate type (AND, OR, NOT, XOR)." },
+  { unit: 8, q: "What is the key advantage of FOL over propositional logic?", options: ["FOL is faster to compute", "FOL can express objects, relations, and quantification", "FOL only needs two truth values", "FOL has fewer symbols"], answer: 1, exp: "FOL adds objects (constants), relations (predicates), functions, and quantifiers — making it far more expressive than propositional logic." },
+];
+
+let activeQuestions = [];
+
+function startQuiz() {
+  const filter = document.getElementById('unit-filter').value;
+  activeQuestions = filter === 'all'
+    ? [...ALL_QUESTIONS]
+    : ALL_QUESTIONS.filter(q => q.unit == filter);
+
+  // Shuffle
+  for (let i = activeQuestions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [activeQuestions[i], activeQuestions[j]] = [activeQuestions[j], activeQuestions[i]];
+  }
+
+  document.getElementById('q-count-badge').textContent = activeQuestions.length + ' Questions';
+  renderQuiz();
+}
+
+function renderQuiz() {
+  const body = document.getElementById('quiz-body');
+  if (activeQuestions.length === 0) {
+    body.innerHTML = '<p style="padding:1.4rem;color:var(--text-dim)">No questions for this unit filter.</p>';
+    return;
+  }
+  body.innerHTML = activeQuestions.map((q, i) => `
+    <div class="q-card" id="qcard-${i}">
+      <div class="q-num">Q${i+1} — Unit ${q.unit}</div>
+      <div class="q-text">${q.q}</div>
+      ${q.options.map((opt, j) => `
+        <label class="option" id="opt-${i}-${j}">
+          <input type="radio" name="q${i}" value="${j}" onchange="checkAnswer(${i},${j})"> ${opt}
+        </label>
+      `).join('')}
+      <div class="q-feedback" id="fb-${i}" style="display:none"></div>
+    </div>
+  `).join('') + '<div id="score-area"></div>';
+}
+
+function checkAnswer(qIdx, chosen) {
+  const q = activeQuestions[qIdx];
+  const fb = document.getElementById(`fb-${qIdx}`);
+  // Highlight options
+  for (let j = 0; j < q.options.length; j++) {
+    const el = document.getElementById(`opt-${qIdx}-${j}`);
+    el.classList.remove('correct', 'wrong', 'reveal-correct');
+    if (j === q.answer) el.classList.add('reveal-correct');
+  }
+  const chosenEl = document.getElementById(`opt-${qIdx}-${chosen}`);
+  if (chosen === q.answer) {
+    chosenEl.classList.add('correct');
+    fb.className = 'q-feedback correct';
+    fb.textContent = 'Correct! ' + q.exp;
+  } else {
+    chosenEl.classList.add('wrong');
+    fb.className = 'q-feedback wrong';
+    fb.textContent = 'Incorrect. ' + q.exp;
+  }
+  fb.style.display = 'block';
+  // Disable further clicks
+  document.querySelectorAll(`input[name="q${qIdx}"]`).forEach(r => r.disabled = true);
+}
+
+function submitQuiz() {
+  if (activeQuestions.length === 0) return;
+  let score = 0;
+  activeQuestions.forEach((q, i) => {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if (selected && parseInt(selected.value) === q.answer) score++;
+    // Reveal all
+    for (let j = 0; j < q.options.length; j++) {
+      const el = document.getElementById(`opt-${i}-${j}`);
+      if (el) {
+        el.classList.remove('correct', 'wrong', 'reveal-correct');
+        if (j === q.answer) el.classList.add('reveal-correct');
+      }
+    }
+    if (selected) {
+      const chosenEl = document.getElementById(`opt-${i}-${parseInt(selected.value)}`);
+      if (chosenEl) chosenEl.classList.add(parseInt(selected.value) === q.answer ? 'correct' : 'wrong');
+      document.querySelectorAll(`input[name="q${i}"]`).forEach(r => r.disabled = true);
+    }
+    const fb = document.getElementById(`fb-${i}`);
+    if (fb) {
+      fb.className = 'q-feedback ' + (selected && parseInt(selected.value) === q.answer ? 'correct' : 'wrong');
+      fb.textContent = q.exp;
+      fb.style.display = 'block';
+    }
+  });
+  const pct = Math.round(score / activeQuestions.length * 100);
+  const area = document.getElementById('score-area');
+  let grade = pct >= 90 ? 'Excellent!' : pct >= 75 ? 'Good work!' : pct >= 60 ? 'Keep studying!' : 'Review the material.';
+  area.innerHTML = `
+    <div class="score-banner">
+      <div class="score-num">${score}/${activeQuestions.length}</div>
+      <div class="score-label">${pct}% — ${grade}</div>
+    </div>
+  `;
+  area.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Start with all questions on load
+startQuiz();
+</script>
+</body>
+</html>
